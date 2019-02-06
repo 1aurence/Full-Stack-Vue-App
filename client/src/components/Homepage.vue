@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-jumbotron class="m-auto">
+    <b-jumbotron class="m-auto" v-if="!getUser">
       <template slot="header">Bootstrap Vue</template>
       <template slot="lead">
         This is a simple hero unit, a simple jumbotron-style component for
@@ -18,12 +18,17 @@
         <b-btn variant="secondary">Signup</b-btn>
       </router-link>
     </b-jumbotron>
+    <h1 v-if="getUser">Homepage</h1>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters(["getUser"])
   }
 };
 </script>

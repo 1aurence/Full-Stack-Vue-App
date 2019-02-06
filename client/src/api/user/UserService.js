@@ -14,7 +14,16 @@ class UserService {
             username,
             password
         }
-        return axios.post(url + 'login', user)
+        try {
+            let getUser = await axios.post(url + 'login', user)
+            if (getUser.status === 200) {
+                return getUser
+            }
+        } catch (err) {
+
+            return err
+        }
+
 
     }
     static async getUserInfo(id) {

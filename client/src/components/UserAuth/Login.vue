@@ -55,18 +55,15 @@ export default {
         );
         if (user) {
           this.$store.dispatch("login", user.data);
-          this.$router.push({
-            name: "Dashboard",
-            params: { user: user.data }
-          });
-        } else {
-          throw new Error("Username does not exist");
+          setTimeout(() => {
+            
+            this.$router.push({ name: "Dashboard", params: { user: user.data } });
+          }, 500);
         }
       } catch (err) {
         this.error.status = true;
+        this.error.msg = "";
         console.log(err);
-        this.error.msg = err.message;
-        this.form.password = "";
       }
     }
   }

@@ -9,12 +9,9 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.config.productionTip = false
 
-const user = JSON.parse(localStorage.getItem('vuex'));
-if (user) {
-  Vue.prototype.$user = user.user
-}
-localStorage.clear()
+console.log(JSON.parse(localStorage.getItem('vuex')).user)
 
+// localStorage.clear()
 new Vue({
   render: h => h(App),
   store,

@@ -58,16 +58,19 @@ module.exports = {
             const getUser = await User.findOne({
                 username: req.body.username
             })
-            if (getUser) {
+            if (!getUser) {
+                throw new Error("User not found")
+            }
+            if (getUser.verified) {
                 bcrypt.compare(req.body.password, getUser.password, (err, result) => {
                     if (result) {
                         res.status(200).send(getUser)
                     } else {
-                        res.status(400).send('Incorrect password')
+                        throw new Error("Incorrect password")
                     }
                 })
             } else {
-                throw new Error("Username does not exist")
+                throw new Error("Check your email to verify your account")
             }
         } catch (err) {
             res.status(404).send(err.message)
@@ -83,9 +86,8 @@ module.exports = {
                 res.status(200).send('Your account has been verified')
             }
 
-        } catch (error) {
-            res.status(400).send(error.message)
-
+        } catch (err) {
+            res.status(400).send(err.message)
         }
 
     }

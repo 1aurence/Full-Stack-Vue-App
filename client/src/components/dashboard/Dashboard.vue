@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Dashboard</h1>
-    <h2>Welcome: {{user.username || this.$user.username}}</h2>
+    <h2>Welcome: {{getUser.username}}</h2>
   </div>
 </template>
 <script>
@@ -10,22 +10,17 @@ import { mapGetters } from "vuex";
 
 export default {
   props: {
-    user: Object
-  },
-  data() {
-    return {};
-  },
-  async created() {
-    if (this.$user) {
-      this.user = this.$user;
-    }
+    user: Object,
+    required: true
   },
   computed: {
-    ...mapGetters(["loggedIn"]),
-    loggedIn() {
-      return loggedIn || this.$user;
-      console.log(loggedIn);
-    }
-  }
+    ...mapGetters(["getUser"])
+  },
+  // async beforeRouteEnter(to, from, next) {
+  //   console.log(this.getUser);
+  //   next(vm => {
+  //     name: "Dashboard";
+  //   });
+  // }
 };
 </script>
