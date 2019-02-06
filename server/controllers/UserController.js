@@ -1,7 +1,26 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const saltRounds = 10
+const transporter = require('../routes/api/nodemailer')
 
+
+
+function sendEmail(email, id) {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Verify email for F-Stack App',
+        html: `<p>Please verify your email by clicking <a targer="_blank" href="http://localhost:3000/api/user/verify/${id}">here</a></p>`
+    }
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            console.log(err.message)
+        } else {
+            // console.log(info)
+        }
+    })
+}
 module.exports = {
     async create(req, res, next) {
         const {
@@ -19,6 +38,7 @@ module.exports = {
                 try {
                     const saveUser = await user.save()
                     if (saveUser) {
+                        sendEmail(email, saveUser._id)
                         res.status(201).send(saveUser)
                     }
                 } catch (err) {
@@ -51,6 +71,21 @@ module.exports = {
             }
         } catch (err) {
             res.status(404).send(err.message)
+        }
+
+    },
+    async verify(req, res, next) {
+        try {
+            let user = await User.findById(req.params.id)
+            user.verified = true
+            let updateUser = await user.save()
+            if (updateUser) {
+                res.status(200).send('Your account has been verified')
+            }
+
+        } catch (error) {
+            res.status(400).send(error.message)
+
         }
 
     }

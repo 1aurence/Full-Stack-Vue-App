@@ -18,8 +18,13 @@ const store = new Vuex.Store({
     mutations: {
         login(state, payload) {
             state.user = payload
-            
 
+
+        }
+    },
+    getters: {
+        loggedIn: state => {
+            return state.user
         }
     },
     actions: {

@@ -11,7 +11,7 @@
           <router-link to="/homepage">Home</router-link>
         </b-nav-item>
 
-        <b-nav-item>
+        <b-nav-item v-if="loggedIn">
           <router-link to="/dashboard">Dashboard</router-link>
         </b-nav-item>
       </b-navbar-nav>
@@ -30,6 +30,17 @@
     </b-collapse>
   </b-navbar>
 </template>
+
+<script>
+export default {
+  computed: {
+    loggedIn() {
+      return this.$store.user || this.$user;
+    }
+  }
+};
+</script>
+
 <style scoped>
 a {
   color: #f8f9fa !important;

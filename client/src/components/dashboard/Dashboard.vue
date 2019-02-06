@@ -6,6 +6,7 @@
 </template>
 <script>
 import UserService from "../../api/user/UserService";
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -19,8 +20,12 @@ export default {
       this.user = this.$user;
     }
   },
-  mounted() {
-    console.log(this.$user);
+  computed: {
+    ...mapGetters(["loggedIn"]),
+    loggedIn() {
+      return loggedIn || this.$user;
+      console.log(loggedIn);
+    }
   }
 };
 </script>
