@@ -1,5 +1,7 @@
 <template>
   <div>
+    <b-alert v-if="error.status" class="alert" show variant="warning">{{error.msg}}</b-alert>
+
     <b-form @submit.prevent="login" class="form mt-3">
       <b-form-group id="exampleInputGroup1" label="Username:" label-for="exampleInput1">
         <b-form-input
@@ -13,7 +15,7 @@
       <b-form-group id="exampleInputGroup2" label="Password:" label-for="exampleInput2">
         <b-form-input
           id="exampleInput2"
-          type="text"
+          type="password"
           v-model="form.password"
           required
           placeholder="Enter password"
@@ -29,17 +31,44 @@
   </div>
 </template>
 <script>
+import UserService from "../../api/user/UserService";
+
 export default {
   data() {
     return {
+      error: {
+        status: false,
+        msg: ""
+      },
       form: {
         username: "",
         password: ""
       }
     };
   },
-  method: {
-    login() {}
+  methods: {
+    async login() {
+      try {
+        let user = await UserService.login(
+          this.form.username,
+          this.form.password
+        );
+        if (user) {
+          this.$store.dispatch("login", user.data);
+          this.$router.push({
+            name: "Dashboard",
+            params: { user: user.data }
+          });
+        } else {
+          throw new Error("Username does not exist");
+        }
+      } catch (err) {
+        this.error.status = true;
+        console.log(err);
+        this.error.msg = err.message;
+        this.form.password = "";
+      }
+    }
   }
 };
 </script>

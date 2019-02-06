@@ -7,10 +7,13 @@
 
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <router-link to="/">
-          <b-nav-item>Home</b-nav-item>
-        </router-link>
-        <b-nav-item href="#">Dashboard</b-nav-item>
+        <b-nav-item>
+          <router-link to="/homepage">Home</router-link>
+        </b-nav-item>
+
+        <b-nav-item>
+          <router-link to="/dashboard">Dashboard</router-link>
+        </b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -27,3 +30,13 @@
     </b-collapse>
   </b-navbar>
 </template>
+<style scoped>
+a {
+  color: #f8f9fa !important;
+  text-decoration: none !important;
+}
+a:hover {
+  opacity: 0.8;
+}
+</style>
+

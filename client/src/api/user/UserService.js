@@ -9,7 +9,16 @@ class UserService {
         }
         return axios.post(url + 'create', user)
     }
-    static async getUser() {
+    static async login(username, password) {
+        const user = {
+            username,
+            password
+        }
+        return axios.post(url + 'login', user)
+
+    }
+    static async getUserInfo(id) {
+        return axios.get(url + 'user-info', id)
 
     }
 }

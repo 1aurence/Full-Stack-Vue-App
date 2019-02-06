@@ -33,6 +33,7 @@ module.exports = {
 
     },
     async login(req, res, next) {
+        console.log(req.body)
         try {
             const getUser = await User.findOne({
                 username: req.body.username

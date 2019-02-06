@@ -30,7 +30,7 @@
       <b-form-group id="exampleInputGroup2" label="Password:" label-for="exampleInput2">
         <b-form-input
           id="exampleInput2"
-          type="text"
+          type="password"
           v-model="form.password"
           required
           placeholder="Enter password"
