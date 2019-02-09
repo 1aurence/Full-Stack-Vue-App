@@ -35,7 +35,7 @@ const store = new Vuex.Store({
             if (!localStorage.getItem('vuex')) {
                 return
             } else {
-                const storedUser = JSON.parse(localStorage.getItem('vuex')).user
+                var storedUser = JSON.parse(localStorage.getItem('vuex')).user
             }
             if (state.user || storedUser) {
                 return state.user || storedUser

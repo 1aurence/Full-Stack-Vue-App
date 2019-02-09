@@ -66,7 +66,9 @@ module.exports = {
                     if (result) {
                         res.status(200).send(getUser)
                     } else {
-                        throw new Error("Incorrect password")
+                        res.status(404).json({
+                            message: "Incorrect password"
+                        })
                     }
                 })
             } else {
