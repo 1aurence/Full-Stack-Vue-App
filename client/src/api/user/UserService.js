@@ -1,5 +1,5 @@
 const axios = require('axios')
-const url = 'http://localhost:3000/api/user/'
+const url = 'api/user/'
 class UserService {
     static async create(username, email, password) {
         const user = {
@@ -14,21 +14,17 @@ class UserService {
             username,
             password
         }
-        try {
-            let getUser = await axios.post(url + 'login', user)
-            if (getUser.status === 200) {
-                return getUser
-            }
-        } catch (err) {
-
-            return err
-        }
-
+        return axios.post(url + 'login', user)
 
     }
     static async getUserInfo(id) {
         return axios.get(url + 'user-info', id)
 
+    }
+    static async updateUsername(currentUsername, newUsername) {
+        return axios.put(url + currentUsername, {
+            newUsername
+        })
     }
 }
 export default UserService

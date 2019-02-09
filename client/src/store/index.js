@@ -22,6 +22,9 @@ const store = new Vuex.Store({
         signout(state) {
             state.user = null
             localStorage.clear()
+        },
+        updateUser(state, payload) {
+            state.user = payload
         }
     },
     getters: {
@@ -44,6 +47,9 @@ const store = new Vuex.Store({
         },
         signout(context) {
             context.commit('signout')
+        },
+        updateUser(context, payload) {
+            context.commit('updateUser', payload.data)
         }
     }
 })

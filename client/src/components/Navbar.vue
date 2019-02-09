@@ -8,11 +8,11 @@
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
         <b-nav-item>
-          <router-link to="/homepage">Home</router-link>
+          <router-link class="links" to="/homepage">Home</router-link>
         </b-nav-item>
 
-        <b-nav-item v-if="user">
-          <router-link to="/dashboard">Dashboard</router-link>
+        <b-nav-item v-if="getUser">
+          <router-link class="links" to="/dashboard">Dashboard</router-link>
         </b-nav-item>
       </b-navbar-nav>
 
@@ -23,7 +23,11 @@
           <template slot="button-content">
             <em>{{getUser.username}}</em>
           </template>
-          <b-dropdown-item class="dropdown-links">Profile</b-dropdown-item>
+
+          <b-dropdown-item class="dropdown-links">
+            <router-link to="/profile">Profile</router-link>
+          </b-dropdown-item>
+
           <b-dropdown-item @click="signOut" class="dropdown-links">Signout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -46,13 +50,13 @@ export default {
   },
   computed: {
     ...mapGetters(["getUser"])
-  }
+  },
 };
 </script>
 
 <style scoped>
 a {
-  color: #f8f9fa !important;
+  color: #666 !important;
   text-decoration: none !important;
 }
 a:hover {
@@ -60,6 +64,9 @@ a:hover {
 }
 .dropdown-links {
   color: #666 !important;
+}
+.links {
+  color: #fff !important;
 }
 </style>
 

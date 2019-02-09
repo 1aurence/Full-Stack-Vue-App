@@ -56,14 +56,15 @@ export default {
         if (user) {
           this.$store.dispatch("login", user.data);
           setTimeout(() => {
-            
-            this.$router.push({ name: "Dashboard", params: { user: user.data } });
+            this.$router.push({
+              name: "Profile",
+              params: { user: user.data }
+            });
           }, 500);
         }
       } catch (err) {
         this.error.status = true;
-        this.error.msg = "";
-        console.log(err);
+        this.error.msg = "Username not found or not verified";
       }
     }
   }

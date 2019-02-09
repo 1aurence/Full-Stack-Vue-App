@@ -9,7 +9,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.config.productionTip = false
 
-console.log(JSON.parse(localStorage.getItem('vuex')).user)
 
 // localStorage.clear()
 new Vue({

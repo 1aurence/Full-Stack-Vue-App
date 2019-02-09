@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <h1>Dashboard</h1>
-    <h2>Welcome: {{getUser.username}}</h2>
+  <div class="container mt-3">
+    <router-link class="mr-5" :to="{path: '/profile'}" active>Profile</router-link>
+    <router-link :to="{path: '/account-settings'}" active>Account Settings</router-link>
+    <router-view/>
   </div>
 </template>
 <script>
@@ -15,12 +16,6 @@ export default {
   },
   computed: {
     ...mapGetters(["getUser"])
-  },
-  // async beforeRouteEnter(to, from, next) {
-  //   console.log(this.getUser);
-  //   next(vm => {
-  //     name: "Dashboard";
-  //   });
-  // }
+  }
 };
 </script>
