@@ -44,8 +44,6 @@ const router = new Router({
                     })
                 }
             }
-
-
         },
         {
             path: '/login',
@@ -66,6 +64,20 @@ const router = new Router({
             ]
         }
     ]
+})
+router.beforeEach((to, from, next) => {
+    if (to.path !== '/' || to.path !== '/homepage' || to.path !== '/login' || to.path !== '/signup') {
+        next()
+    } else {
+        if (store.getters.getUser) {
+            next()
+        } else {
+            next({
+                path: '/'
+            })
+        }
+        //TODO Handle non existent pages
+    }
 })
 
 

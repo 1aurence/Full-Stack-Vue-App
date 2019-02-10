@@ -32,17 +32,13 @@ const store = new Vuex.Store({
             return state.user
         },
         getUser: state => {
-            if (!localStorage.getItem('vuex')) {
-                return
-            } else {
-                var storedUser = JSON.parse(localStorage.getItem('vuex')).user
+            try {
+
+                return state.user || JSON.parse(localStorage.getItem('vuex')).user
+            } catch (error) {
+                console.log(error.message)
             }
-            if (state.user || storedUser) {
-                return state.user || storedUser
-            } else {
-                return false
-            }
-        }
+        },
     },
     actions: {
         login(context, payload) {

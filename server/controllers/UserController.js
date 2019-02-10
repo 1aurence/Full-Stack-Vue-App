@@ -57,7 +57,7 @@ module.exports = {
         console.log(req.body)
         try {
             const getUser = await User.findOne({
-                username: req.body.username
+                username: req.body.username.toLowerCase()
             })
             if (!getUser) {
                 throw new Error("User not found")
@@ -95,16 +95,6 @@ module.exports = {
         }
 
     },
-    async userPosts(req, res, next) {
-        try {
-            let usersPosts = await Post.find({
-                author: req.body._id
-            })
-            res.send(usersPosts)
-        } catch (err) {
-            return res.status(404).send(JSON.stringify(err.message))
-        }
-    },
     async updateUsername(req, res, next) {
         console.log(req.params.username, req.body.newUsername)
         try {
@@ -114,7 +104,7 @@ module.exports = {
             if (findExistingUser) {
                 throw new Error("Username is taken")
             } else {
-                let updateUser = await User.updateOne({
+                 await User.updateOne({
                     username: req.params.username
                 }, {
                     $set: {
@@ -130,6 +120,17 @@ module.exports = {
             res.status(400).send(err.message)
 
         }
-    }
+    },
+    async userPosts(req, res, next) {
+        console.log(req.params._id)
+        try {
+            let usersPosts = await Post.find({
+                author: req.params.id
+            })
+            res.send(usersPosts)
+        } catch (err) {
+            return res.status(404).send(err.message)
+        }
+    },
 
 }

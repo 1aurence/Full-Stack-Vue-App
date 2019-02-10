@@ -55,12 +55,10 @@ export default {
         );
         if (user) {
           this.$store.dispatch("login", user.data);
-          setTimeout(() => {
-            this.$router.push({
-              name: "Profile",
-              params: { user: user.data }
-            });
-          }, 500);
+          this.$router.push({
+            name: "Profile",
+            params: { user: user.data }
+          });
         }
       } catch (err) {
         this.error.status = true;

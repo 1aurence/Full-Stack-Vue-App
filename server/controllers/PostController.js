@@ -19,6 +19,19 @@ module.exports = {
         } catch (err) {
             res.status(400).send(err.message)
         }
+    },
+    async delete(req, res, next) {
+        try {
+            let deletePost = await Post.deleteOne({
+                _id: req.params.id
+            })
+            if (deletePost) {
+                res.send("Post deleted")
+            }
+        } catch (err) {
+            res.status(400).send("Error removing post")
+        }
+
     }
-  
+
 }
