@@ -35,6 +35,7 @@
           <b-button variant="warning" class="mr-2">Edit</b-button>
           <b-button variant="danger" @click="deletePost(post._id)">Delete</b-button>
         </b-list-group-item>
+        <p v-if="noUserPosts">You currently have zero posts</p>
       </b-list-group>
     </div>
   </div>
@@ -51,13 +52,22 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getUser"])
+    ...mapGetters(["getUser"]),
+    noUserPosts() {
+      if (this.userPosts.length === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   async created() {
     try {
       let getPosts = await PostService.getUserPosts(this.getUser._id);
       this.userPosts = getPosts.data;
-    } catch (err) {}
+    } catch (err) {
+      console.log(err.message);
+    }
   },
   methods: {
     async deletePost(id) {
