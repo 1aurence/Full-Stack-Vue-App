@@ -8,6 +8,8 @@ import HandleAuth from '@/components/UserAuth/HandleAuth'
 import Login from '@/components/UserAuth/Login'
 import Signup from '@/components/UserAuth/Signup'
 import store from './store/index';
+import Posts from '@/components/posts/Posts'
+import CreatePost from '@/components/posts/CreatePost'
 
 Vue.use(Router)
 
@@ -26,6 +28,7 @@ const router = new Router({
             props: true,
             children: [{
                     path: '/profile',
+                    alias: '/dashboard',
                     name: 'Profile',
                     component: Profile
                 },
@@ -62,8 +65,22 @@ const router = new Router({
 
                 }
             ]
+        },
+        {
+            path: '/posts',
+            name: 'Posts',
+            component: Posts,
+            children: [{
+                    path: '/create-post',
+                    name: 'CreatePost',
+                    component: CreatePost
+
+                }
+
+            ]
         }
-    ]
+    ],
+
 })
 router.beforeEach((to, from, next) => {
     if (to.path !== '/' || to.path !== '/homepage' || to.path !== '/login' || to.path !== '/signup') {

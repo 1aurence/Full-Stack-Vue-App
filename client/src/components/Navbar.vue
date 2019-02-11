@@ -14,6 +14,9 @@
         <b-nav-item v-if="getUser">
           <router-link class="links" to="/dashboard">Dashboard</router-link>
         </b-nav-item>
+         <b-nav-item v-if="getUser">
+          <router-link class="links" to="create-post">Create Post</router-link>
+        </b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->

@@ -23,7 +23,8 @@ const UserSchema = new Schema({
     },
     verified: {
         type: Boolean,
-        default: false
+        default: false,
+        required: true,
     },
     posts: [{
         type: Schema.Types.ObjectId,

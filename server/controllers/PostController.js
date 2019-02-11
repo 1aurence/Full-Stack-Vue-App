@@ -2,6 +2,7 @@ const Post = require('../models/Post')
 
 module.exports = {
     async create(req, res, next) {
+        console.log(req.body)
         let {
             title,
             body,

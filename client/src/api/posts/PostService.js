@@ -9,6 +9,9 @@ class PostService {
     static async deletePost(postId) {
         return axios.delete(url + 'delete/' + postId)
     }
+    static async createPost(post) {
+        return axios.post(url + 'create', post)
+    }
 
 }
 export default PostService
