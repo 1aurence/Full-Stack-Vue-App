@@ -89,46 +89,65 @@ module.exports = {
             if (updateUser) {
                 res.sendStatus(200).send('Your account has been verified')
             }
-
         } catch (err) {
             res.status(400).send(JSON.stringify(err.message))
         }
-
     },
-    async updateUsername(req, res, next) {
-        console.log(req.params.username, req.body.newUsername)
+    async changeUsername(req, res, next) {
+        const userId = req.params.userId
         try {
             let findExistingUser = await User.findOne({
-                username: req.body.username
+                username: req.body.newUsername
             })
             if (findExistingUser) {
                 throw new Error("Username is taken")
             } else {
-                 await User.updateOne({
-                    username: req.params.username
-                }, {
-                    $set: {
-                        username: req.body.newUsername
-                    }
-                })
-                let returnUpdatedUser = await User.findOne({
-                    username: req.body.newUsername
-                })
+                await User.findByIdAndUpdate(
+                    userId, {
+                        $set: {
+                            username: req.body.newUsername
+                        }
+                    })
+                let returnUpdatedUser = await User.findById(userId)
                 res.send(returnUpdatedUser)
             }
         } catch (err) {
+            console.log(err.message)
             res.status(400).send(err.message)
-
         }
     },
+    async changePassword(req, res, next) {
+        const userId = req.params.userId
+        const newPassword = req.body.newPassword
+        try {
+            bcrypt.hash(newPassword, saltRounds, async (err, hash) => {
+                if (err) {
+                    throw new Error(err.message)
+                } else {
+                    let updatePassword = await User.findByIdAndUpdate(userId, {
+                        $set: {
+                            password: hash
+                        }
+                    })
+                    if (updatePassword) {
+                        res.send(updatePassword)
+                    }
+                }
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(400).send(err.message)
+        }
+
+    },
     async userPosts(req, res, next) {
-        console.log(req.params._id)
         try {
             let usersPosts = await Post.find({
                 author: req.params.id
             })
             res.send(usersPosts)
         } catch (err) {
+            console.log(err.message)
             return res.status(404).send(err.message)
         }
     },

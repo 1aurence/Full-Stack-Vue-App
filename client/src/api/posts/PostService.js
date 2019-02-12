@@ -6,6 +6,9 @@ class PostService {
     static async getUserPosts(userId) {
         return axios.get(url2 + 'user-posts/' + userId)
     }
+    static async getPosts() {
+        return axios.get(url + 'posts')
+    }
     static async deletePost(postId) {
         return axios.delete(url + 'delete/' + postId)
     }

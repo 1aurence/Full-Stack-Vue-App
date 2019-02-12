@@ -1,6 +1,6 @@
 <template>
-  <div id="profile" class="container">
-    <h3>Hello, {{getUser.username}}</h3>
+  <div id="profile" class="container mt-3">
+    <h3 id="username">Hello, {{getUser.username}}</h3>
     <small>Member since: {{getUser.createdAt}}</small>
     <div id="profile-pic-container">
       <img src="../../assets/placeholder.png" id="profile-pic" class="mt-3 mb-3">
@@ -113,6 +113,9 @@ export default {
   &:hover {
     opacity: 0.7;
   }
+}
+#username {
+  white-space: nowrap;
 }
 </style>
 

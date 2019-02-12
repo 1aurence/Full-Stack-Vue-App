@@ -15,7 +15,6 @@ const PostSchema = new Schema({
         maxlength: 255,
 
     },
-
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -24,8 +23,11 @@ const PostSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
-
+    },
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 
 })
 

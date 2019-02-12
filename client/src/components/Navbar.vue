@@ -12,10 +12,10 @@
         </b-nav-item>
 
         <b-nav-item v-if="getUser">
-          <router-link class="links" to="/dashboard">Dashboard</router-link>
+          <router-link class="links" :to="{name: 'Profile'}">Profile</router-link>
         </b-nav-item>
-         <b-nav-item v-if="getUser">
-          <router-link class="links" to="create-post">Create Post</router-link>
+        <b-nav-item v-if="getUser">
+          <router-link class="links" :to="{name: 'AllPosts'}">Posts</router-link>
         </b-nav-item>
       </b-navbar-nav>
 
@@ -28,7 +28,7 @@
           </template>
 
           <b-dropdown-item class="dropdown-links">
-            <router-link to="/profile">Profile</router-link>
+            <router-link :to="{name: 'Profile'}">Profile</router-link>
           </b-dropdown-item>
 
           <b-dropdown-item @click="signOut" class="dropdown-links">Signout</b-dropdown-item>

@@ -9,6 +9,15 @@ const UserSchema = new Schema({
         unique: true,
         trim: true,
         maxlength: 12,
+        minlength: 4,
+        validate: {
+            validator: function (v) {
+                let usernameRegex = /\w/g
+                return /\w/g.test(v)
+
+            },
+            message: "Username contains invalid characters"
+        }
     },
     email: {
         type: String,
@@ -20,6 +29,8 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        maxlength: 30,
+        minlength: 4,
     },
     verified: {
         type: Boolean,
@@ -34,7 +45,6 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now
     }
-
 
 })
 

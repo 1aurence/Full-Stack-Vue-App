@@ -21,11 +21,15 @@ class UserService {
         return axios.get(url + 'user-info', id)
 
     }
-    static async changeUsername(currentUsername, newUsername) {
-        return axios.put(url + currentUsername, {
+    static async changeUsername(userId, newUsername) {
+        return axios.put(url + '/change-username/' + userId, {
             newUsername
         })
     }
-   
+    static async changePassword(userId, newPassword) {
+        return axios.put(url + '/change-password/' + userId, {
+            newPassword
+        })
+    }
 }
 export default UserService

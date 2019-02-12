@@ -10,6 +10,7 @@ import Signup from '@/components/UserAuth/Signup'
 import store from './store/index';
 import Posts from '@/components/posts/Posts'
 import CreatePost from '@/components/posts/CreatePost'
+import AllPosts from '@/components/posts/AllPosts'
 
 Vue.use(Router)
 
@@ -27,13 +28,13 @@ const router = new Router({
             component: Dashboard,
             props: true,
             children: [{
-                    path: '/profile',
+                    path: 'profile',
                     alias: '/dashboard',
                     name: 'Profile',
                     component: Profile
                 },
                 {
-                    path: '/account-settings',
+                    path: 'account-settings',
                     name: 'AccountSettings',
                     component: AccountSettings
                 }
@@ -70,7 +71,14 @@ const router = new Router({
             path: '/posts',
             name: 'Posts',
             component: Posts,
-            children: [{
+            children: [
+                {
+                    path: '/posts',
+                    name: 'AllPosts',
+                    component: AllPosts
+
+                },
+                {
                     path: '/create-post',
                     name: 'CreatePost',
                     component: CreatePost
