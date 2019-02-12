@@ -29,7 +29,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        maxlength: 30,
+        // maxlength: 30,
         minlength: 4,
     },
     verified: {

@@ -46,6 +46,7 @@ module.exports = {
                     if (err.code === 11000) {
                         res.status(400).send("Email or username already in use")
                     } else {
+                        console.log(err.message)
                         res.status(400).send(err.message)
                     }
                 }
