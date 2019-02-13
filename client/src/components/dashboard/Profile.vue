@@ -28,12 +28,33 @@
       >Hide posts</b-button>
 
       <b-list-group class="posts" v-if="showPosts">
-        <b-list-group-item v-for="post in userPosts" :key="post._id">
-          <h4>{{post.title}}</h4>
+        <b-list-group-item class="mb-1" v-for="post in userPosts" :key="post._id">
+          <h4 v-if="!post.editing">{{post.title}}</h4>
+          <div v-if="post.editing">
+            <b-form-input
+              v-if="post.editing"
+              label="Title"
+              placeholder="Change title"
+              class="mb-3"
+            />
+            <b-form-textarea
+              v-model="post.newBody"
+              placeholder="Enter something"
+              :rows="3"
+              :max-rows="6"
+            />
+          </div>
+
           <small>Created on {{post.createdAt}}</small>
           <p>{{post.body}}</p>
-          <b-button variant="warning" class="mr-2">Edit</b-button>
-          <b-button variant="danger" @click="deletePost(post._id)">Delete</b-button>
+          <div v-if="!post.editing">
+            <b-button variant="warning" class="mr-2" @click="post.editing=true">Edit</b-button>
+            <b-button variant="danger" @click="deletePost(post._id)">Delete</b-button>
+          </div>
+          <div v-if="post.editing">
+            <b-button variant="secondary" class="mr-2" @click="post.editing=false">Cancel</b-button>
+            <b-button variant="primary">Save</b-button>
+          </div>
         </b-list-group-item>
         <p v-if="noUserPosts">You currently have zero posts</p>
       </b-list-group>
@@ -48,7 +69,12 @@ export default {
   data() {
     return {
       showPosts: false,
-      userPosts: []
+      userPosts: [],
+      post: {
+        editing: false,
+        newTitle: "",
+        newBody: ""
+      }
     };
   },
   computed: {
@@ -64,7 +90,9 @@ export default {
   async created() {
     try {
       let getPosts = await PostService.getUserPosts(this.getUser._id);
-      this.userPosts = getPosts.data;
+      if (getPosts) {
+        this.userPosts = getPosts.data;
+      }
     } catch (err) {
       console.log(err.message);
     }
@@ -75,6 +103,9 @@ export default {
       await PostService.deletePost(id);
       let updatePosts = await PostService.getUserPosts(this.getUser._id);
       this.userPosts = updatePosts.data;
+    },
+    editPost() {
+      return (this.post.editing = true);
     }
   }
 };

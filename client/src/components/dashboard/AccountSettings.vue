@@ -100,10 +100,10 @@ export default {
           }, 3500);
           this.passwordForm.newPassword = "";
         }
-      } catch (error) {
+      } catch (err) {
         console.log(error);
         this.passwordForm.newPassword = "";
-        this.passwordAlert.msg = "Username already in use";
+        this.passwordAlert.msg = err.message;
         this.passwordAlert.error = true;
         setTimeout(() => {
           this.passwordAlert.error = false;

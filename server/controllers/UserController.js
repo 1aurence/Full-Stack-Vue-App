@@ -5,8 +5,6 @@ const bcrypt = require('bcryptjs')
 const saltRounds = 10
 const transporter = require('../routes/api/nodemailer')
 
-
-
 function sendEmail(email, id) {
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -142,6 +140,7 @@ module.exports = {
 
     },
     async userPosts(req, res, next) {
+        console.log(req.params.id)
         try {
             let usersPosts = await Post.find({
                 author: req.params.id

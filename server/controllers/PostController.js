@@ -1,14 +1,16 @@
 const Post = require('../models/Post')
+const Comment = require('../models/Comment')
 const mongoose = require('mongoose')
+
 module.exports = {
     async create(req, res, next) {
-        console.log(req.body)
         let {
             title,
             body,
             author
         } = req.body
         let post = new Post({
+            _id: new mongoose.Types.ObjectId(),
             title,
             body,
             author: new mongoose.Types.ObjectId(author)
@@ -45,20 +47,5 @@ module.exports = {
             res.status(400).send(err.message)
         }
     },
-    async addComment(req, res, next) {
-
-        let comment = new Comment({
-            body: req.body.body
-        })
-        try {
-            let saveComment = await comment.save()
-            if (saveComment) {
-                res.send(saveComment)
-            }
-
-        } catch (err) {
-            res.status(400).send(err.message)
-        }
-    }
 
 }

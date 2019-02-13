@@ -14,7 +14,6 @@ const UserSchema = new Schema({
             validator: function (v) {
                 let usernameRegex = /\w/g
                 return /\w/g.test(v)
-
             },
             message: "Username contains invalid characters"
         }

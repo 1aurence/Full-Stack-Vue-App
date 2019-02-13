@@ -71,15 +71,14 @@ const router = new Router({
             path: '/posts',
             name: 'Posts',
             component: Posts,
-            children: [
-                {
-                    path: '/posts',
+            children: [{
+                    path: 'all-posts',
                     name: 'AllPosts',
                     component: AllPosts
 
                 },
                 {
-                    path: '/create-post',
+                    path: 'create-post',
                     name: 'CreatePost',
                     component: CreatePost
 

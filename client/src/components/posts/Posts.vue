@@ -3,10 +3,10 @@
     <div>
       <b-nav>
         <b-nav-item active>
-          <router-link class="mr-3" to="/posts" active>All Posts</router-link>
+          <router-link class="mr-3" :to="{name: 'AllPosts'}" active>All Posts</router-link>
         </b-nav-item>
         <b-nav-item active>
-          <router-link class="mr-3" to="/create-post" active>Create Post</router-link>
+          <router-link class="mr-3" :to="{name: 'CreatePost'}" active>Create Post</router-link>
         </b-nav-item>
       </b-nav>
     </div>
@@ -19,7 +19,7 @@ a {
   font-size: 1.5rem;
   color: #888 !important;
 }
-.router-link-active {
+.router-link-exact-active {
   text-decoration: underline;
 }
 </style>

@@ -15,17 +15,16 @@
   </div>
 </template>
 <script>
-import UserService from "../../api/user/UserService";
-import { mapGetters } from "vuex";
+// import { mapGetters } from "vuex";
 
 export default {
   props: {
     user: Object,
     required: true
   },
-  computed: {
-    ...mapGetters(["getUser"])
-  }
+  // computed: {
+  //   ...mapGetters(["getUser"])
+  // }
 };
 </script>
 <style lang="scss" scoped>
