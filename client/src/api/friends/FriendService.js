@@ -7,6 +7,9 @@ class FriendService {
             recievingUser
         })
     }
+    static async removeFriend(to, from) {
+        return axios.delete(`${url}remove/${to}/${from}`)
+    }
     static async getFriends(id) {
         return axios.get(url + id)
     }

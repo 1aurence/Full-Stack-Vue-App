@@ -6,7 +6,7 @@
       show
       variant="success"
     >Account has been successfully created</b-alert>
-    <b-alert v-if="createError.status" class="alert" show variant="warning">{{createError.msg}}</b-alert>
+    <b-alert v-if="createError" class="alert" show variant="warning">{{createError}}</b-alert>
 
     <b-form @submit.prevent="createUser" class="form mt-3">
       <b-form-group id="exampleInputGroup3" label="Email:" label-for="exampleInput3">
@@ -50,10 +50,7 @@ export default {
   data() {
     return {
       accountCreated: false,
-      createError: {
-        status: false,
-        msg: ""
-      },
+      createError: null,
 
       form: {
         email: "",
@@ -76,9 +73,10 @@ export default {
           console.log(newUser);
         }
       } catch (err) {
-        this.createError.status = true;
-        this.createError.msg = "Email or username already in use";
-        console.log(err);
+        this.createError = err.response.data;
+        setTimeout(() => {
+          this.createError = null;
+        }, 2500);
         this.form.password = "";
       }
     },

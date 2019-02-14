@@ -64,18 +64,14 @@ module.exports = {
                     if (result) {
                         res.status(200).send(getUser);
                     } else {
-                        res.status(404).json({
-                            message: "Incorrect password"
-                        });
+                        return res.status(400).send("Incorrect password");
                     }
                 });
             } else {
                 throw new Error("Check your email to verify your account");
             }
         } catch (err) {
-            return res.status(400).json({
-                error: err.message
-            });
+            return res.status(400).send(err.message);
         }
     },
     async verify(req, res, next) {
@@ -87,7 +83,7 @@ module.exports = {
                 res.sendStatus(200).send("Your account has been verified");
             }
         } catch (err) {
-            res.status(400).send(JSON.stringify(err.message));
+            res.status(400).send(err.message);
         }
     },
     async changeUsername(req, res, next) {
@@ -154,6 +150,14 @@ module.exports = {
         } catch (err) {
             console.log(err.message);
             return res.status(404).send(err.message);
+        }
+    },
+    async getUser(req, res, next) {
+        try {
+            let getUser = await User.findById(req.params.id)
+            res.send(getUser)
+        } catch (err) {
+            res.status(400).send(err.message)
         }
     }
 };

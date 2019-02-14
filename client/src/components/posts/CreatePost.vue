@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <div class="alerts">
+      <b-alert class="alert" show variant="success" v-if="postCreated">Post successfully created</b-alert>
+      <b-alert class="alert" show variant="warning" v-if="error">{{error}}</b-alert>
+    </div>
     <h3 class="mt-4">Create Post</h3>
 
     <b-form @submit.prevent="createPost" class="mt-4">
@@ -8,8 +12,6 @@
         <b-form-textarea v-model="form.body" placeholder="Enter something" :rows="3" :max-rows="6"/>
       </b-form-group>
       <b-button variant="primary" type="submit">Create Post</b-button>
-      <b-alert show variant="success" v-if="postCreated">Post successfully created</b-alert>
-      <b-alert show variant="warning" v-if="error.status">{{error.msg}}</b-alert>
     </b-form>
   </div>
 </template>
@@ -25,10 +27,7 @@ export default {
         author: this.$store.getters.getUser._id
       },
       postCreated: false,
-      error: {
-        msg: null,
-        status: false
-      }
+      error: null
     };
   },
 
@@ -46,14 +45,22 @@ export default {
           }, 3500);
         }
       } catch (err) {
-        console.log(err);
-        this.error.msg = err.message;
-        this.error.status = true;
+        this.error = err.response.data;
         setTimeout(() => {
-          this.error.status = false;
+          this.error = null;
         }, 3500);
       }
     }
   }
 };
 </script>
+<style lang="scss" scoped>
+.alert {
+  position: absolute;
+  z-index: 99999 !important;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+</style>
+

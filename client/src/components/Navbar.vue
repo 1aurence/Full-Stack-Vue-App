@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable="md" type="dark" variant="info">
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-    <router-link to="/">
+    <router-link to="/homepage">
       <b-navbar-brand>Full-Stacky</b-navbar-brand>
     </router-link>
 
@@ -9,7 +9,7 @@
       <b-navbar-nav>
         <!-- <b-nav-item>
           <router-link class="links" to="/homepage">Home</router-link>
-        </b-nav-item> -->
+        </b-nav-item>-->
         <b-nav-item v-if="getUser">
           <router-link class="links" :to="{name: 'Profile'}">Profile</router-link>
         </b-nav-item>

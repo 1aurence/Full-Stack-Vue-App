@@ -18,7 +18,7 @@ class UserService {
 
     }
     static async getUserInfo(id) {
-        return axios.get(url + 'user-info', id)
+        return axios.get(url + 'user-info/' + id)
 
     }
     static async changeUsername(userId, newUsername) {

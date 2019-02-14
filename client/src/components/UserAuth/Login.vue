@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-alert v-if="error.status" class="alert" show variant="warning">{{error.msg}}</b-alert>
+    <b-alert v-if="error" class="alert" show variant="warning">{{error}}</b-alert>
 
     <b-form @submit.prevent="login" class="form mt-3">
       <b-form-group id="exampleInputGroup1" label="Username:" label-for="exampleInput1">
@@ -36,10 +36,7 @@ import UserService from "../../api/user/UserService";
 export default {
   data() {
     return {
-      error: {
-        status: false,
-        msg: ""
-      },
+      error: null,
       form: {
         username: "",
         password: ""
@@ -61,8 +58,11 @@ export default {
           });
         }
       } catch (err) {
-        this.error.status = true;
-        this.error.msg = err.message;
+        this.error = err.response.data;
+        console.log(err.response.data);
+        setTimeout(() => {
+          this.error = null;
+        }, 2500);
         console.log(err);
       }
     }

@@ -1,10 +1,24 @@
 <template>
   <div id="settings" class="container mt-3">
+    <div class="alerts">
+      <b-alert
+        class="alert"
+        show
+        variant="success"
+        v-if="usernameAlert.success"
+      >Your username has been changed</b-alert>
+      <b-alert class="alert" show variant="warning" v-if="usernameAlert.error">{{usernameAlert.msg}}</b-alert>
+      <b-alert
+        class="alert"
+        show
+        variant="success"
+        v-if="passwordAlert.success"
+      >Your password has been changed</b-alert>
+      <b-alert class="alert" show variant="warning" v-if="passwordAlert.error">{{passwordAlert.msg}}</b-alert>
+    </div>
     <h3 class="mb-4">Settings</h3>
     <div class="username">
       <br>
-      <b-alert show variant="success" v-if="usernameAlert.success">Your username has been changed</b-alert>
-      <b-alert show variant="warning" v-if="usernameAlert.error">{{usernameAlert.msg}}</b-alert>
       <b-form @submit.prevent="changeUsername" class="w-25 m-auto d-flex align-items-center">
         <b-form-input v-model="usernameForm.newUsername" type="text" placeholder="New username"></b-form-input>
         <b-button class="ml-1" type="submit" variant="success">Change</b-button>
@@ -17,8 +31,6 @@
         <b-button class="ml-1" type="submit" variant="success">Change</b-button>
       </b-form>
       <br>
-      <b-alert show variant="success" v-if="passwordAlert.success">Your password has been changed</b-alert>
-      <b-alert show variant="warning" v-if="passwordAlert.error">{{passwordAlert.msg}}</b-alert>
     </div>
   </div>
 </template>
@@ -117,6 +129,13 @@ export default {
 input {
   min-width: 160px;
   margin: 0 auto;
+}
+.alert {
+  position: absolute;
+  z-index: 99999 !important;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 </style>
 

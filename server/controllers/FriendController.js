@@ -28,6 +28,20 @@ module.exports = {
             res.status(400).send(err.message)
         }
     },
+    async removeFriend(req, res, next) {
+        console.log(req.params)
+        try {
+            let removeFriend = await Friend.findOneAndDelete({
+                to: req.params.to,
+                from: req.params.from
+            })
+            res.send("Friend has been removed")
+
+        } catch (err) {
+            console.log(err.message)
+            res.status(400).send(err.message)
+        }
+    },
     async getFriendRequests(req, res, next) {
         try {
             let findRequests = await Friend.find({

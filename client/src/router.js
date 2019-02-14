@@ -11,14 +11,14 @@ import store from './store/index';
 import Posts from '@/components/posts/Posts'
 import CreatePost from '@/components/posts/CreatePost'
 import AllPosts from '@/components/posts/AllPosts'
+import User from '@/components/user/User'
 
 Vue.use(Router)
 
 const router = new Router({
     mode: 'history',
     routes: [{
-            path: '/',
-            alias: '/homepage',
+            path: '/homepage',
             name: 'Homepage',
             component: Homepage
         },
@@ -50,11 +50,12 @@ const router = new Router({
             }
         },
         {
-            path: '/login',
+            path: '/',
             name: 'HandleAuth',
             component: HandleAuth,
             children: [{
-                    path: '/login',
+                    path: '',
+                    alias: '/login',
                     name: 'Login',
                     component: Login
 
@@ -85,6 +86,10 @@ const router = new Router({
                 }
 
             ]
+        },
+        {
+            path: '/user/:id',
+            component: User
         }
     ],
 

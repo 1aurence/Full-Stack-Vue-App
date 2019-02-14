@@ -1,5 +1,14 @@
 <template>
   <div class="container mt-3">
+    <div class="alerts">
+      <b-alert
+        class="alert"
+        show
+        variant="success"
+        v-if="comment.success"
+      >Comment successfully created</b-alert>
+      <b-alert class="alert" show variant="warning" v-if="comment.error">{{comment.error}}</b-alert>
+    </div>
     <h2 class="mb-3">See what others are saying...</h2>
     <b-form-input v-model="postSearch" type="text" placeholder="Search post by title..."></b-form-input>
     <b-list-group class="mt-4">
@@ -39,8 +48,7 @@
               :rows="3"
               :max-rows="6"
             />
-            <b-alert show variant="success" v-if="comment.success">Comment successfully created</b-alert>
-            <b-alert show variant="warning" v-if="comment.error">{{error.msg}}</b-alert>
+
             <div slot="modal-footer" class="w-100">
               <b-btn
                 size="sm"
@@ -88,7 +96,7 @@ export default {
         comment: "",
         commenting: false,
         success: false,
-        error: false
+        error: null
       }
     };
   },
@@ -129,7 +137,10 @@ export default {
           }, 1500);
         }
       } catch (err) {
-        console.log(err);
+        this.comment.error = err.response.data;
+        setTimeout(() => {
+          this.comment.error = null;
+        }, 2500);
       }
     },
     async showComments(post, postId) {
@@ -165,6 +176,13 @@ export default {
 #comments {
   height: 300px;
   overflow: scroll;
+}
+.alert {
+  position: absolute;
+  z-index: 99999 !important;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 </style>
 
