@@ -43,7 +43,11 @@ const UserSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    friends: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Friend'
+    }],
 
 })
 

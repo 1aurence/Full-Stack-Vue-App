@@ -62,7 +62,8 @@ export default {
         }
       } catch (err) {
         this.error.status = true;
-        this.error.msg = "Username not found or not verified";
+        this.error.msg = err.message;
+        console.log(err);
       }
     }
   }

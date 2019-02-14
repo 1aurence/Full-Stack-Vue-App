@@ -1,5 +1,5 @@
 const axios = require('axios')
-const url = 'api/user/'
+const url = '/api/user/'
 class UserService {
     static async create(username, email, password) {
         const user = {
@@ -30,6 +30,10 @@ class UserService {
         return axios.put(url + '/change-password/' + userId, {
             newPassword
         })
+    }
+    static async getUsers() {
+        return axios.get(url)
+
     }
 }
 export default UserService
