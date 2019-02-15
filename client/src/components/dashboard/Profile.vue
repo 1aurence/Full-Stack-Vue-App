@@ -15,6 +15,13 @@
         v-if="friendRequest.error"
       >Friend request still pending</b-alert>
       <b-alert class="alert" show variant="success" v-if="friendRemoved">Friend has been removed</b-alert>
+      <b-alert
+        class="alert"
+        show
+        variant="success"
+        v-if="msgInfo.success"
+      >Your message has been sent</b-alert>
+      <b-alert class="alert" show variant="success" v-if="msgInfo.error">{{msgInfo.error}}</b-alert>
     </div>
     <div class="row mt-5">
       <div class="user-info column">
@@ -27,6 +34,10 @@
         </div>
         <div class="user-details mt-1">
           <h4>Details</h4>
+          <p>
+            <i class="fas fa-envelope"></i>
+            : {{userMessages.length}}
+          </p>
           <p>Total posts: {{userPosts.length}}</p>
           <p>Total friends: {{friends.length}}</p>
           <b-button
@@ -75,6 +86,11 @@
               @click="removeFriend(friend.to, friend.from._id)"
             >Remove</b-button>
             <b-button variant="link" size="sm" @click="viewUser(friend.from._id)">View profile</b-button>
+            <b-button
+              variant="link"
+              size="sm"
+              @click="startMsg(friend.from._id,friend.to)"
+            >Send Message</b-button>
           </b-list-group-item>
         </b-list-group>
         <b-button variant="primary" @click="getUsers">Add new friend</b-button>
@@ -165,6 +181,30 @@
         <b-btn size="sm" class="float-left" variant="secondary" @click="viewingUser=false">Close</b-btn>
       </div>
     </b-modal>
+    <b-modal
+      no-close-on-esc
+      hide-header-close
+      no-close-on-backdrop
+      id="modal"
+      v-model="msgModal"
+      title="Send Message"
+    >
+      <b-form class="mt-4">
+        <b-form-group>
+          <b-form-input label="Title" v-model="msg.title" placeholder="Title" class="mb-3"/>
+          <b-form-textarea
+            v-model="msg.body"
+            placeholder="Enter something"
+            :rows="3"
+            :max-rows="6"
+          />
+        </b-form-group>
+      </b-form>
+      <div slot="modal-footer" class="w-100">
+        <b-btn size="sm" class="float-right" variant="primary" @click="sendMsg">Send</b-btn>
+        <b-btn size="sm" class="float-left" variant="secondary" @click="cancelMsg">Cancel</b-btn>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -172,6 +212,8 @@ import { mapGetters } from "vuex";
 import PostService from "../../api/posts/PostService";
 import UserService from "../../api/user/UserService";
 import FriendService from "../../api/friends/FriendService";
+import MessageService from "../../api/messages/MessageService";
+
 export default {
   data() {
     return {
@@ -182,6 +224,7 @@ export default {
         newTitle: "",
         newBody: ""
       },
+      userMessages: [],
       userProfileFriends: 0,
       userProfile: null,
       viewingUser: false,
@@ -197,6 +240,17 @@ export default {
         error: false,
         success: false,
         username: ""
+      },
+      msgModal: false,
+      msg: {
+        to: null,
+        from: null,
+        title: "",
+        body: ""
+      },
+      msgInfo: {
+        error: null,
+        success: null
       }
     };
   },
@@ -224,7 +278,7 @@ export default {
         this.userPosts = getPosts.data;
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(err.response.data);
     }
     try {
       let getFriends = await FriendService.getFriends(this.getUser._id);
@@ -232,20 +286,23 @@ export default {
         this.friends = getFriends.data;
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
     }
     try {
       let pendingFriendRequests = await FriendService.getPendingFriendRequests(
         this.getUser._id
       );
       this.pendingFriendRequests = pendingFriendRequests.data;
+    } catch (err) {}
+    try {
+      let getMsgs = await MessageService.getMessages(this.getUser._id);
+      this.userMessages = getMsgs.data;
     } catch (err) {
-      console.log(err.message);
+      console.log(err.response.data);
     }
   },
   methods: {
     async deletePost(id) {
-      console.log("userid", this.getUser._id);
       await PostService.deletePost(id);
       let updatePosts = await PostService.getUserPosts(this.getUser._id);
       this.userPosts = updatePosts.data;
@@ -261,7 +318,7 @@ export default {
           this.users = users.data;
         }
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data);
       }
     },
     async refreshFriendRequests() {
@@ -287,7 +344,7 @@ export default {
         setTimeout(() => {
           this.friendRequest.error = false;
         }, 2500);
-        console.log(err);
+        console.log(err.response.data);
       }
     },
     async acceptFriendRequest(to, from) {
@@ -312,7 +369,7 @@ export default {
           this.friends = getFriends.data;
         }
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data);
       }
     },
     async removeFriend(to, from) {
@@ -329,7 +386,7 @@ export default {
             }, 2500);
           }
         } catch (err) {
-          console.log(err);
+          console.log(err.response.data);
         }
       }
     },
@@ -350,9 +407,41 @@ export default {
           this.userProfileFriends = getFriends.data;
         }
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data);
       }
       this.viewingUser = true;
+    },
+    startMsg(to, from) {
+      this.msg.to = to;
+      this.msg.from = from;
+      this.msgModal = true;
+    },
+    cancelMsg() {
+      this.msg.to = null;
+      this.msg.from = null;
+      this.msg.title = null;
+      this.msg.body = null;
+      this.msgModal = false;
+    },
+    async sendMsg() {
+      try {
+        let sendMsg = await MessageService.send(this.msg);
+        if (sendMsg) {
+          this.msgInfo.success = true;
+          this.msg.title = "";
+          this.msg.body = "";
+          setTimeout(() => {
+            this.msgInfo.success = false;
+            this.cancelMsg();
+          }, 2500);
+        }
+      } catch (err) {
+        console.log(err.response.data);
+        this.msgInfo.error = err.response.data;
+        setTimeout(() => {
+          this.msgInfo.error = null;
+        }, 2500);
+      }
     }
   }
 };

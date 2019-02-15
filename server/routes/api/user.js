@@ -8,8 +8,6 @@ router.post('/login', UserController.login)
 router.get('', UserController.allUsers)
 router.get('/user-info/:id', UserController.getUser)
 router.get('/verify/:id', UserController.verify)
-router.get('/user-posts/:id', UserController.userPosts)
-router.get('/comments/:id', CommentController.userComments)
 router.put('/change-username/:userId', UserController.changeUsername)
 router.put('/change-password/:userId', UserController.changePassword)
 

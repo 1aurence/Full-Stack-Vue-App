@@ -5,9 +5,9 @@
         class="alert"
         show
         variant="success"
-        v-if="comment.success"
+        v-if="newComment.success"
       >Comment successfully created</b-alert>
-      <b-alert class="alert" show variant="warning" v-if="comment.error">{{comment.error}}</b-alert>
+      <b-alert class="alert" show variant="warning" v-if="newComment.error">{{newComment.error}}</b-alert>
     </div>
     <h2 class="mb-3">See what others are saying...</h2>
     <b-form-input v-model="postSearch" type="text" placeholder="Search post by title..."></b-form-input>
@@ -26,7 +26,7 @@
             class="ml-3"
             size="sm"
             variant="primary"
-            @click="comment.commenting=true"
+            @click="startCommenting(post._id, post.author._id)"
           >Comment</b-button>
           <b-button
             class="ml-3"
@@ -40,30 +40,6 @@
             v-if="post.showingComments"
             @click="post.showingComments = false"
           >Hide Comments</b-button>
-
-          <b-modal v-model="comment.commenting" title="Tell em' what you thought">
-            <b-form-textarea
-              v-model="comment.comment"
-              placeholder="Your comment..."
-              :rows="3"
-              :max-rows="6"
-            />
-
-            <div slot="modal-footer" class="w-100">
-              <b-btn
-                size="sm"
-                class="float-left"
-                variant="secondary"
-                @click="comment.commenting=false"
-              >Cancel</b-btn>
-              <b-btn
-                size="sm"
-                class="float-right"
-                variant="primary"
-                @click="createComment(post._id, post.author._id)"
-              >Submit</b-btn>
-            </div>
-          </b-modal>
         </div>
         <b-list-group class="mt-2" v-if="post.showingComments" id="comments">
           <b-list-group-item
@@ -79,10 +55,31 @@
         </b-list-group>
       </b-list-group-item>
     </b-list-group>
+    <b-modal
+      no-close-on-esc
+      hide-header-close
+      no-close-on-backdrop
+      v-model="newComment.commenting"
+      title="Tell em' what you thought"
+    >
+      <b-form-textarea
+        v-model="newComment.comment"
+        placeholder="Your comment..."
+        :rows="3"
+        :max-rows="6"
+      />
+
+      <div slot="modal-footer" class="w-100">
+        <b-btn size="sm" class="float-left" variant="secondary" @click="stopCommenting">Cancel</b-btn>
+        <b-btn size="sm" class="float-right" variant="primary" @click="createComment">Submit</b-btn>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
 import PostService from "../../api/posts/PostService";
+import CommentService from "../../api/comments/CommentService";
+
 import { get } from "http";
 import { setTimeout } from "timers";
 
@@ -92,11 +89,13 @@ export default {
       userPosts: [],
       postSearch: "",
       comments: [],
-      comment: {
+      newComment: {
         comment: "",
         commenting: false,
         success: false,
-        error: null
+        error: null,
+        postId: null,
+        authorId: null
       }
     };
   },
@@ -119,33 +118,31 @@ export default {
     filteredComments(comment, post) {}
   },
   methods: {
-    async createComment(postId, authorId) {
-      console.log(authorId);
+    async createComment() {
       try {
-        let addComment = await PostService.comment(
-          postId,
-          authorId,
-          this.comment.comment
+        let addComment = await CommentService.comment(
+          this.newComment.postId,
+          this.newComment.authorId,
+          this.newComment.comment
         );
         if (addComment) {
-          this.comment.success = true;
-          this.comment.comment = "";
+          this.newComment.success = true;
           this.showComments();
           setTimeout(() => {
-            this.comment.commenting = false;
-            this.comment.success = false;
+            this.stopCommenting();
+            this.newComment.success = false;
           }, 1500);
         }
       } catch (err) {
-        this.comment.error = err.response.data;
+        this.newComment.error = err.response.data;
         setTimeout(() => {
-          this.comment.error = null;
+          this.newComment.error = null;
         }, 2500);
       }
     },
     async showComments(post, postId) {
       try {
-        let comments = await PostService.showPostComments(postId);
+        let comments = await CommentService.showPostComments(postId);
         if (comments) {
           this.comments = comments.data;
           post.showingComments = true;
@@ -153,6 +150,18 @@ export default {
       } catch (err) {
         console.log(err.message);
       }
+    },
+    startCommenting(postId, authorId) {
+      this.newComment.postId = postId;
+      this.newComment.authorId = authorId;
+      this.newComment.commenting = true;
+      this.newComment.comment = "";
+    },
+    stopCommenting() {
+      this.newComment.postId = null;
+      this.newComment.authorId = null;
+      this.newComment.comment = "";
+      this.newComment.commenting = false;
     }
   }
 };

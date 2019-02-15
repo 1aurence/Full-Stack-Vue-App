@@ -8,6 +8,8 @@ const port = process.env.PORT || 3000
 const UserRoutes = require('./routes/api/user')
 const PostRoutes = require('./routes/api/post')
 const FriendRoutes = require('./routes/api/friend')
+const MessageRoutes = require('./routes/api/message')
+const CommentRoutes = require('./routes/api/comment')
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -15,6 +17,8 @@ app.use(cors())
 app.use('/api/user', UserRoutes)
 app.use('/api/post', PostRoutes)
 app.use('/api/friend', FriendRoutes)
+app.use('/api/message', MessageRoutes)
+app.use('/api/comment', CommentRoutes)
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(__dirname + '/public'))

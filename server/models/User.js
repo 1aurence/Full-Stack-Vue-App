@@ -48,6 +48,10 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Friend'
     }],
+    messages: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Message'
+    }],
 
 })
 

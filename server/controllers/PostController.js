@@ -4,7 +4,11 @@ const mongoose = require("mongoose");
 
 module.exports = {
   async create(req, res, next) {
-    let { title, body, author } = req.body;
+    let {
+      title,
+      body,
+      author
+    } = req.body;
     let post = new Post({
       _id: new mongoose.Types.ObjectId(),
       title,
@@ -43,5 +47,16 @@ module.exports = {
       console.log(err.message);
       res.status(400).send(err.message);
     }
-  }
+  },
+  async userPosts(req, res, next) {
+    try {
+      let usersPosts = await Post.find({
+        author: req.params.id
+      });
+      res.send(usersPosts);
+    } catch (err) {
+      console.log(err.message);
+      return res.status(404).send(err.message);
+    }
+  },
 };

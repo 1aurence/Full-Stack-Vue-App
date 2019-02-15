@@ -36,7 +36,6 @@ export default {
       try {
         let createPost = await PostService.createPost(this.form);
         if (createPost) {
-          console.log(createPost);
           this.form.title = "";
           this.form.body = "";
           this.postCreated = true;

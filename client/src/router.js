@@ -12,6 +12,7 @@ import Posts from '@/components/posts/Posts'
 import CreatePost from '@/components/posts/CreatePost'
 import AllPosts from '@/components/posts/AllPosts'
 import User from '@/components/user/User'
+import Inbox from '@/components/dashboard/Inbox'
 
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ const router = new Router({
                     path: 'account-settings',
                     name: 'AccountSettings',
                     component: AccountSettings
+                },
+                {
+                    path: 'inbox',
+                    name: "Inbox",
+                    component: Inbox
                 }
             ],
             beforeEnter: (to, from, next) => {
@@ -90,7 +96,8 @@ const router = new Router({
         {
             path: '/user/:id',
             component: User
-        }
+        },
+
     ],
 
 })

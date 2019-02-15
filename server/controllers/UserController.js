@@ -141,17 +141,6 @@ module.exports = {
             res.status(400).send(err.message)
         }
     },
-    async userPosts(req, res, next) {
-        try {
-            let usersPosts = await Post.find({
-                author: req.params.id
-            });
-            res.send(usersPosts);
-        } catch (err) {
-            console.log(err.message);
-            return res.status(404).send(err.message);
-        }
-    },
     async getUser(req, res, next) {
         try {
             let getUser = await User.findById(req.params.id)

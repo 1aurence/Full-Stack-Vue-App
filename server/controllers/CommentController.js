@@ -4,8 +4,8 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 
 module.exports = {
-  async addComment(req, res, next) {
-    console.log(req.body);
+  async create(req, res, next) {
+    console.log(req.body)
     let comment = new Comment({
       author: new mongoose.Types.ObjectId(req.body.authorId),
       postId: new mongoose.Types.ObjectId(req.body.postId),

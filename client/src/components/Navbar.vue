@@ -7,9 +7,7 @@
 
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <!-- <b-nav-item>
-          <router-link class="links" to="/homepage">Home</router-link>
-        </b-nav-item>-->
+
         <b-nav-item v-if="getUser">
           <router-link class="links" :to="{name: 'Profile'}">Profile</router-link>
         </b-nav-item>
@@ -30,6 +28,10 @@
             <router-link :to="{name: 'Profile'}">Profile</router-link>
           </b-dropdown-item>
 
+          <b-dropdown-item class="dropdown-links">
+            <router-link :to="{name: 'Inbox'}">Messages</router-link>
+          </b-dropdown-item>
+
           <b-dropdown-item @click="signOut" class="dropdown-links">Signout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -39,7 +41,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-
 export default {
   computed: {
     ...mapGetters(["loggedIn"])
